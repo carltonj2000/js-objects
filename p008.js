@@ -1,34 +1,26 @@
-/* class keyword */
+/* Composition over Inheritance */
 
-class Mammal {
-  constructor(sound) {
-    this.sound = sound;
-  }
-  talk() {
-    return this.sound;
-  }
-}
+const barker = state => ({
+  bark: () => console.log("Woof, I am " + state.name)
+});
 
-const fluffykings = new Mammal("woof!");
+const driver = state => ({
+  driver: () => (state.position = state.position + state.speed)
+});
 
-console.log(fluffykings);
-console.log(fluffykings.talk());
+const killer = state => ({
+  kill: () => console.log("bang bang")
+});
 
-class Dog extends Mammal {
-  constructor() {
-    super("wofferliwoff");
-  }
-}
+barker({ name: "karo" }).bark();
 
-const fluffy = new Dog();
-console.log(fluffy.talk());
+const murderRobotDog = name => {
+  let state = {
+    name,
+    speed: 100,
+    position: 0
+  };
+  return Object.assign({}, barker(state), driver(state), killer(state));
+};
 
-const y = fluffy.talk();
-
-console.log(typeof Dog);
-console.log(Dog.prototype.talk);
-console.log(Dog.prototype.talk());
-
-console.log(Dog.prototype.talk.bind({ sound: "w" })());
-
-console.log(Dog.prototype.isPrototypeOf(fluffy));
+murderRobotDog("sniffles").bark();
